@@ -1,4 +1,6 @@
 ﻿using System;
+using Amazon.S3;
+using Amazon.S3.Model;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using Snowcode.S3BuildPublisher.Client;
@@ -40,6 +42,12 @@ namespace Snowcode.S3BuildPublisher
         /// </summary>
         [Required]
         public string EncryptionContainerName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the AmazonS3 client protocol (HTTPS is default). 
+        /// </summary>
+
+        public string Protocol { get; set; }
 
         #endregion
 
@@ -88,6 +96,16 @@ namespace Snowcode.S3BuildPublisher
 
             var clientDetailsStore = new ClientDetailsStore();
             AwsClientDetails clientDetails = clientDetailsStore.Load(EncryptionContainerName);
+            clientDetails.AmazonS3Config = new AmazonS3Config();
+            var http = Amazon.S3.Model.Protocol.HTTP.ToString();
+            switch (Protocol.ToUpper())
+            {
+                case "HTTP": clientDetails.AmazonS3Config.CommunicationProtocol =  Amazon.S3.Model.Protocol.HTTP;
+                    break;
+                default:
+                    clientDetails.AmazonS3Config.CommunicationProtocol = Amazon.S3.Model.Protocol.HTTPS;
+                    break;
+            }
             Logger.LogMessage(MessageImportance.Normal, "Connecting to AWS using AwsAccessKeyId: {0}", clientDetails.AwsAccessKeyId);
             return clientDetails;
         }

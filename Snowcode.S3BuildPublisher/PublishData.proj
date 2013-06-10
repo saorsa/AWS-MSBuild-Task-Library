@@ -38,9 +38,9 @@
   <!-- You should run this first time you run any of these targets to ensure your keys are stored -->
   <Target Name="StoreKeys">
     <StoreClientDetailsTask
-      EncryptionContainerName ="MySecretContainer"
-      AwsAccessKeyId="##YOUR-AMAZON-ID-HERE##"
-      AwsSecretAccesskey="##YOUR-SECRET-ACCESS-KEY-HERE##" />
+      EncryptionContainerName ="AWS_S3_SECRET_CONTAINER"
+      AwsAccessKeyId="AKIAIAN73OWVZ4QLP63Q"
+      AwsSecretAccesskey="u6xJa1yAteAcVL88TArhFIXY9NRpEaCDZNMSumCw" />
   </Target>
   
   

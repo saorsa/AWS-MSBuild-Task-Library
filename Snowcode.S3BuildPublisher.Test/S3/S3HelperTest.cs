@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using Snowcode.S3BuildPublisher.Client;
 using Snowcode.S3BuildPublisher.S3;
 
@@ -7,7 +8,7 @@ namespace Snowcode.S3BuildPublisher.Test.S3
     [TestFixture]
     public class S3HelperTest
     {
-        private const string Container = "MySecretContainer";
+        private const string Container = "AWS_S3_SECRET_CONTAINER";
 
         [Test]
         [Ignore("Manual run test")]
@@ -93,5 +94,39 @@ namespace Snowcode.S3BuildPublisher.Test.S3
                 helper.DeleteBucket(bucketName);
             }   
         }
+
+
+        [Test]
+        [Ignore("Manual run test")]
+        public void PutFileObjectTest()
+        {
+            // Get the client details from the stored client details (rather than embed secret keys in the test).
+            // Ensure that your AWS/Secret keys have been stored before running.
+            var store = new ClientDetailsStore();
+            AwsClientDetails clientDetails = store.Load(Container);
+
+            S3Helper helper = new S3Helper(clientDetails);
+
+            const string bucketName = "ExampleTestBucket";
+            const string key = "ExampleObject";
+
+            // Put a simple text object into the bucket to delete.
+            helper.CreateBucket(bucketName);
+            try
+            {
+                
+                helper.PutFileObject(bucketName, key, @"C:\Temp\IMD.WebSite.zip");
+            }
+            catch (Exception ex)
+            {
+                
+            }
+            finally
+            {
+                //helper.DeleteObject(bucketName, key);
+                //helper.DeleteBucket(bucketName);
+            }
+        }
+
     }
 }

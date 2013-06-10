@@ -45,7 +45,7 @@ namespace Snowcode.S3BuildPublisher.S3
 
             try
             {
-                ValidateBucketName();
+                //ValidateBucketName();  Niki commented on 02.06.2013
 
                 ValidateFolder();
 

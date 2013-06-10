@@ -49,6 +49,7 @@ namespace Snowcode.S3BuildPublisher.S3
 
         private void PutFileObject(AwsClientDetails clientDetails)
         {
+            
             using (var helper = new S3Helper(clientDetails))
             {
                 helper.PutFileObject(BucketName, Key, FileName);

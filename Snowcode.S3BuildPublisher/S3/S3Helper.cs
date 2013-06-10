@@ -12,6 +12,11 @@ namespace Snowcode.S3BuildPublisher.S3
     /// <summary>
     /// Helper class to connect to Amazon aws S3 and store files.
     /// </summary>
+    /// 
+    /// 
+    /// 
+    
+ 
     public class S3Helper : IDisposable
     {
         private bool _disposed;
@@ -25,7 +30,8 @@ namespace Snowcode.S3BuildPublisher.S3
 
         public S3Helper(AwsClientDetails clientDetails)
         {
-            Client = AWSClientFactory.CreateAmazonS3Client(clientDetails.AwsAccessKeyId, clientDetails.AwsSecretAccessKey);
+            Client = clientDetails.AmazonS3Config!=null ? AWSClientFactory.CreateAmazonS3Client(clientDetails.AwsAccessKeyId, clientDetails.AwsSecretAccessKey,clientDetails.AmazonS3Config)
+                                                        : AWSClientFactory.CreateAmazonS3Client(clientDetails.AwsAccessKeyId, clientDetails.AwsSecretAccessKey);
         }
 
         public S3Helper(AmazonS3 amazonS3Client)
@@ -96,8 +102,12 @@ namespace Snowcode.S3BuildPublisher.S3
         /// <param name="file"></param>
         public void PutFileObject(string bucketName, string key, string file)
         {
-            var request = new PutObjectRequest { FilePath = file, BucketName = bucketName, Key = key };
-
+            var request = new PutObjectRequest
+                {
+                    FilePath = file, BucketName = bucketName, Key = key,
+                    Timeout = -1,
+                    ReadWriteTimeout = -1  
+                };
             Client.PutObject(request);
         }
 

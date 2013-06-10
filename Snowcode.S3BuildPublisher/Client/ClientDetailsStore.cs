@@ -90,6 +90,8 @@ namespace Snowcode.S3BuildPublisher.Client
 
                 clientDetails.AwsSecretAccessKey = EncryptionHelper.Decrypt(containerName, encrypredPassword);
 
+
+
                 return clientDetails;
             }
         }
